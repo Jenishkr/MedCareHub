@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 function AuthPage() {
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    // Regular expression to allow only alphabets
+    const regex = /^[A-Za-z\s]*$/;
+    if (regex.test(value)) {
+      setName(value);
+      setError(""); // Clear the error if valid
+    } else {
+      setError("Name should only contain alphabets.");
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* Left Side: Welcome Back Section */}
@@ -28,9 +43,12 @@ function AuthPage() {
             <input
               type="text"
               id="name"
+              value={name}
+              onChange={handleNameChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-700"
               placeholder="Name"
             />
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
           <div className="mb-6">
