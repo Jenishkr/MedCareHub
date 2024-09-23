@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function App() {
+  const [age, setAge] = useState('');
+  const [weight, setWeight] = useState('');
+  const [ageError, setAgeError] = useState('');
+  const [weightError, setWeightError] = useState('');
+
+  // Function to handle age input, allowing only digits
+  const handleAgeChange = (e) => {
+    const value = e.target.value;
+    const regex = /^[0-9]*$/; // Only digits
+    if (regex.test(value)) {
+      setAge(value);
+      setAgeError('');
+    } else {
+      setAgeError('Age should only contain digits.');
+    }
+  };
+
+  // Function to handle weight input, allowing only digits and one dot
+  const handleWeightChange = (e) => {
+    const value = e.target.value;
+    const regex = /^[0-9]*\.?[0-9]*$/; // Allows digits and one dot
+    if (regex.test(value)) {
+      setWeight(value);
+      setWeightError('');
+    } else {
+      setWeightError('Weight should contain only digits and a decimal point.');
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* Left Section - Sign In */}
@@ -18,28 +47,31 @@ function App() {
 
         {/* Form */}
         <div className="w-1/2 space-y-4">
+          {/* Age input with validation */}
           <input
             type="text"
             placeholder="Age"
+            value={age}
+            onChange={handleAgeChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
           />
+          {ageError && <p className="text-red-500 text-sm">{ageError}</p>}
+
+          {/* Gender selection */}
           <select
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
           >
-            <option value="" disabled selected>
-                Select Gender
-                </option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="female">Prefer not to Say</option>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="prefer-not-to-say">Prefer not to Say</option>
           </select>
 
+          {/* Blood Group selection */}
           <select
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
           >
-            <option value="" disabled selected>
-              Select Blood Group
-            </option>
+            <option value="" disabled selected>Select Blood Group</option>
             <option value="A+">A positive (A+)</option>
             <option value="A-">A negative (A-)</option>
             <option value="B+">B positive (B+)</option>
@@ -50,11 +82,18 @@ function App() {
             <option value="AB-">AB negative (AB-)</option>
           </select>
 
-          <input
-            type="text"
-            placeholder="Weight"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-          />
+          {/* Weight input with validation */}
+          <div className="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-purple-600">
+            <input
+              type="text"
+              placeholder="Weight"
+              value={weight}
+              onChange={handleWeightChange}
+              className="w-full px-4 py-2 focus:outline-none"
+            />
+            <span className="pr-4 text-gray-500">Kg</span>
+          </div>
+          {weightError && <p className="text-red-500 text-sm">{weightError}</p>}
         </div>
 
         <button className="mt-8 bg-purple-600 text-white px-8 py-2 rounded-full hover:bg-purple-700">
